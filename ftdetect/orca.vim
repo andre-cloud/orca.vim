@@ -28,25 +28,28 @@ function! OrcaComplete(findstart, base)
         endif
 
         " 2. Find the current block context
+        " 2. Find the current block context
         let l:current_block = ''
         let l:lnum = line('.')
         while l:lnum > 0
             let l:line_text = getline(l:lnum)
+            
             if l:line_text =~? '^%\s*\w\+'
                 let l:current_block = matchstr(tolower(l:line_text), '^%\s*\zs\w\+')
                 break
-            elseif l:line_text =~? '\<end\>' && l:lnum != line('.')
-                " Stop if outside a block
+            
+            elseif l:line_text =~? '^end\>' && l:lnum != line('.')
                 break
             endif
+            
             let l:lnum -= 1
         endwhile
 
         " 3. Block-specific dictionaries (Expand this list based on manual)
         let l:block_keywords = {
             \ 'scf': ['MaxIter', 'Conv', 'TolE', 'TolR', 'TolMaxP', 'Shift', 'DIIS', 'SOSCF', 'NRSCF', 'Guess', 'PrintLevel'],
-            \ 'geom': ['MaxIter', 'TolE', 'TolMAXG', 'TolRMSG', 'TolMAXD', 'TolRMSD', 'Scan', 'Constraints', 'InHess', 'Calc_Hess'],
-            \ 'pal': ['nprocs'],
+            \ 'geom': ['MaxIter', 'TolE', 'TolMAXG', 'TolRMSG', 'TolMAXD', 'TolRMSD', 'Scan', 'Constraints', 'InHessName', 'Calc_Hess'],
+            \ 'pal': ['nprocs', 'nprocs_group'],
             \ 'basis': ['NewGTO', 'DelGTO', 'Extrapolate'],
             \ 'mp2': ['Density', 'NActiveCore', 'DoF12'],
             \ 'tddft': ['NRoots', 'MaxDim', 'Triplets', 'DoQuad', 'TDA'],
