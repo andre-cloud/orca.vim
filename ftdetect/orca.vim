@@ -47,13 +47,20 @@ function! OrcaComplete(findstart, base)
 
         " 3. Block-specific dictionaries (Expand this list based on manual)
         let l:block_keywords = {
-            \ 'scf': ['MaxIter', 'Conv', 'TolE', 'TolR', 'TolMaxP', 'Shift', 'DIIS', 'SOSCF', 'NRSCF', 'Guess', 'PrintLevel'],
-            \ 'geom': ['MaxIter', 'TolE', 'TolMAXG', 'TolRMSG', 'TolMAXD', 'TolRMSD', 'Scan', 'Constraints', 'InHessName', 'Calc_Hess'],
-            \ 'pal': ['nprocs', 'nprocs_group'],
-            \ 'basis': ['NewGTO', 'DelGTO', 'Extrapolate'],
-            \ 'mp2': ['Density', 'NActiveCore', 'DoF12'],
-            \ 'tddft': ['NRoots', 'MaxDim', 'Triplets', 'DoQuad', 'TDA'],
-            \ 'output': ['PrintLevel', 'Print', 'NoPrint']
+            \ 'scf': ['MaxIter', 'Conv', 'TolE', 'TolR', 'TolMaxP', 'TolRMSP', 'Shift', 'DIIS', 'SOSCF', 'NRSCF', 'Guess', 'PrintLevel', 'DirectResetFreq', 'CNVTrafo', 'AutoStart', 'NoIter'],
+            \ 'geom': ['MaxIter', 'TolE', 'TolMAXG', 'TolRMSG', 'TolMAXD', 'TolRMSD', 'Scan', 'Constraints', 'InHessName', 'Calc_Hess', 'NumHess', 'Bofill', 'GDIIS', 'Trust', 'MaxStep', 'XYZFile'],
+            \ 'pal': ['nprocs','nprocs_group'],
+            \ 'basis': ['NewGTO', 'DelGTO', 'Extrapolate', 'Basis', 'AuxJ', 'AuxC', 'AuxJK'],
+            \ 'mp2': ['Density', 'NActiveCore', 'DoF12', 'DoOO', 'MaxIter'],
+            \ 'tddft': ['NRoots', 'MaxDim', 'Triplets', 'Singlets', 'DoQuad', 'TDA', 'Iroot', 'NState', 'DoTrans', 'MaxIter', 'DoSOC'],
+            \ 'output': ['PrintLevel', 'Print', 'NoPrint'],
+            \ 'rel': ['PictureChange', 'DoSOC', 'SOC', 'Zeff'],
+            \ 'elprop': ['Dipole', 'Polar', 'Quadrupole'],
+            \ 'freq': ['Temp', 'Restart', 'NumFreq', 'CentralDiff'],
+            \ 'md': ['Timestep', 'InitVel', 'Thermostat', 'DumpFreq', 'MaxIter', 'RungeKutta'],
+            \ 'plots': ['dim1', 'dim2', 'dim3', 'Format', 'ElDens', 'SpinDens', 'MO'],
+            \ 'casscf': ['nel', 'norb', 'mult', 'nroots', 'weights', 'bdtol', 'trafo', 'maxiter', 'rel'],
+            \ 'mrci': ['maxiter', 'tolerr', 'acpf', 'aqcc', 'davids', 'nroots', 'selthresh']
             \ }
 
         " 4. Return matching keywords for the active block
