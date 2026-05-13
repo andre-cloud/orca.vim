@@ -37,18 +37,43 @@ function! OrcaComplete(findstart, base)
         " The text on the line before the current word
         let l:line_before_word = l:line[0 : l:word_start_col - 1]
         
-        let l:words_before = split(l:line_before_word)
+        " Clean up quotes and equal signs to easily find the preceding word
+        let l:clean_line = substitute(l:line_before_word, '["''=]', ' ', 'g')
+        let l:words_before = split(l:clean_line)
+        
+        let l:is_file_completion = 0
         
         if len(l:words_before) > 0
-            let l:prev_word = l:words_before[-1]
+            " Strip leading non-alphabetic characters (like *, %, !)
+            let l:prev_word = substitute(l:words_before[-1], '^[^a-zA-Z]\+', '', '')
             " Keywords that are followed by a filename
-            let l:file_keywords = ['InHessName', 'XYZFile', 'GBW', 'MOREAD', 'File', 'NewGTO', 'NewECP', 'InHess']
+            let l:file_keywords = ['InHessName', 'XYZFile', 'GBW', 'MOREAD', 'File', 'NewGTO', 'NewECP', 'InHess', 'moinp']
             for l:kw in l:file_keywords
                 if l:kw ==? l:prev_word
-                    " We are completing a filename. Return matching files in current dir.
-                    return glob(a:base . '*', 0, 1)
+                    let l:is_file_completion = 1
+                    break
                 endif
             endfor
+        endif
+
+        " Check for * xyzfile syntax which usually has charge and multiplicity in between
+        if l:line_before_word =~? '^\s*\*\s*\(xyzfile\|xyz\|int\|gzmat\)'
+            let l:is_file_completion = 1
+        endif
+
+        if l:is_file_completion
+            " Case-insensitive file matching
+            let l:dir = fnamemodify(a:base, ':h')
+            let l:glob_pat = (l:dir == '.' && a:base !~ '^[\/.]') ? '*' : (a:base =~ '/$' ? a:base . '*' : l:dir . '/*')
+            let l:all_files = glob(l:glob_pat, 0, 1)
+            let l:res_files = []
+            let l:pat = '^\V' . escape(a:base, '\')
+            for l:f in l:all_files
+                if l:f =~? l:pat
+                    call add(l:res_files, l:f)
+                endif
+            endfor
+            return l:res_files
         endif
         " --- End of new code for file completion ---
 
