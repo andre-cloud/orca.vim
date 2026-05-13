@@ -9,8 +9,8 @@ function! OrcaComplete(findstart, base)
     if a:findstart
         let l:line = getline('.')
         let l:start = col('.') - 1
-        " Match letters, numbers, %, and hyphens
-        while l:start > 0 && l:line[l:start - 1] =~ '[A-Za-z0-9_%-]'
+        " Match letters, numbers, %, hyphens, dots and slashes for file paths
+        while l:start > 0 && l:line[l:start - 1] =~ '[A-Za-z0-9_%-./]'
             let l:start -= 1
         endwhile
         return l:start
@@ -26,6 +26,31 @@ function! OrcaComplete(findstart, base)
             endfor
             return l:res
         endif
+
+        " --- Start of new code for file completion ---
+        let l:line = getline('.')
+        let l:cursor_col = col('.')
+        
+        " The word being completed is a:base. Its start is at cursor_col - len(a:base)
+        let l:word_start_col = l:cursor_col - len(a:base)
+        
+        " The text on the line before the current word
+        let l:line_before_word = l:line[0 : l:word_start_col - 1]
+        
+        let l:words_before = split(l:line_before_word)
+        
+        if len(l:words_before) > 0
+            let l:prev_word = l:words_before[-1]
+            " Keywords that are followed by a filename
+            let l:file_keywords = ['InHessName', 'XYZFile', 'GBW', 'MOREAD', 'File', 'NewGTO', 'NewECP', 'InHess']
+            for l:kw in l:file_keywords
+                if l:kw ==? l:prev_word
+                    " We are completing a filename. Return matching files in current dir.
+                    return glob(a:base . '*', 0, 1)
+                endif
+            endfor
+        endif
+        " --- End of new code for file completion ---
 
         " 2. Find the current block context
         " 2. Find the current block context
@@ -61,7 +86,8 @@ function! OrcaComplete(findstart, base)
             \ 'plots': ['dim1', 'dim2', 'dim3', 'Format', 'ElDens', 'SpinDens', 'MO'],
             \ 'casscf': ['nel', 'norb', 'mult', 'nroots', 'weights', 'bdtol', 'trafo', 'maxiter', 'rel'],
             \ 'mrci': ['maxiter', 'tolerr', 'acpf', 'aqcc', 'davids', 'nroots', 'selthresh']
-            \ }
+            \, 'irc': ['MaxIter', 'TolE', 'TolG', 'TolPath', 'Direction', 'StepSize', 'MassWeighted', 'PrintLevel']
+            \}
 
         " 4. Return matching keywords for the active block
         let l:res = []
