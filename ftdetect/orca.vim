@@ -98,7 +98,7 @@ function! OrcaComplete(findstart, base)
         " 3. Block-specific dictionaries (Expand this list based on manual)
         let l:block_keywords = {
             \ 'scf': ['MaxIter', 'Conv', 'TolE', 'TolR', 'TolMaxP', 'TolRMSP', 'Shift', 'DIIS', 'SOSCF', 'NRSCF', 'Guess', 'PrintLevel', 'DirectResetFreq', 'CNVTrafo', 'AutoStart', 'NoIter'],
-            \ 'geom': ['MaxIter', 'TolE', 'TolMAXG', 'TolRMSG', 'TolMAXD', 'TolRMSD', 'Scan', 'Constraints', 'InHessName', 'Calc_Hess', 'NumHess', 'Bofill', 'GDIIS', 'Trust', 'MaxStep', 'XYZFile'],
+            \ 'geom': ['MaxIter', 'TolE', 'TolMAXG', 'TolRMSG', 'TolMAXD', 'TolRMSD', 'Scan', 'Constraints', 'InHessName', 'Calc_Hess', 'NumHess', 'Bofill', 'GDIIS', 'Trust', 'MaxStep'],
             \ 'pal': ['nprocs','nprocs_group'],
             \ 'basis': ['NewGTO', 'DelGTO', 'Extrapolate', 'Basis', 'AuxJ', 'AuxC', 'AuxJK'],
             \ 'mp2': ['Density', 'NActiveCore', 'DoF12', 'DoOO', 'MaxIter'],
@@ -110,8 +110,8 @@ function! OrcaComplete(findstart, base)
             \ 'md': ['Timestep', 'InitVel', 'Thermostat', 'DumpFreq', 'MaxIter', 'RungeKutta'],
             \ 'plots': ['dim1', 'dim2', 'dim3', 'Format', 'ElDens', 'SpinDens', 'MO'],
             \ 'casscf': ['nel', 'norb', 'mult', 'nroots', 'weights', 'bdtol', 'trafo', 'maxiter', 'rel'],
-            \ 'mrci': ['maxiter', 'tolerr', 'acpf', 'aqcc', 'davids', 'nroots', 'selthresh']
-            \, 'irc': ['MaxIter', 'TolE', 'TolG', 'TolPath', 'Direction', 'StepSize', 'MassWeighted', 'PrintLevel']
+            \ 'mrci': ['maxiter', 'tolerr', 'acpf', 'aqcc', 'davids', 'nroots', 'selthresh'],
+            \ 'irc': ['MaxIter', 'TolE', 'TolG', 'TolPath', 'Direction', 'StepSize', 'MassWeighted', 'PrintLevel']
             \}
 
         " 4. Return matching keywords for the active block
